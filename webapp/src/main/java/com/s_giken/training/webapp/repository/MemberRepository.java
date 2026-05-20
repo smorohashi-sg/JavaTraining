@@ -57,12 +57,17 @@ public class MemberRepository implements IMemberRepository {
     /**
      * メールアドレスの一部にマッチするの加入者情報リストを取得する。
      *
+     * @param mail 検索したいメールアドレスの一部
      * @return Optional型の Memberオブジェクト
      */
     @Override
     public List<Member> findByMailLike(String mail) {
+        if(mail == null) {
+            throw new IllegalStateException("mail is null");
+        }
+
         String sql = "SELECT * FROM T_MEMBER WHERE mail like ?";
-        Object[] args = { mail };
+        Object[] args = { "%" + mail + "%" };
         int[] argTypes = { Types.VARCHAR };
         List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
         return result;
