@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/app :: layout(${member.memberId != null}?'加入者編集':'加入者新規追加', ~{::content}, 'member')}">
 <html th:replace="~{layout/app :: layout(${isAddMode}?'加入者新規追加':'加入者編集', ~{::content}, 'member')}"
   xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
@@ -43,8 +42,7 @@
         <a role="button" class="secondary" th:href="@{/member/search}">キャンセル</a>
       </div>
       <div th:if="!${isAddMode}">
-        <a role="button" class="contrast" id="delete"
-          th:href="@{/member/delete/{id}(id=*{memberId})}">削除</a>
+        <a role="button" class="contrast" id="delete" th:href="@{/member/delete/{id}(id=*{memberId})}">削除</a>
       </div>
     </div>
   </form>
