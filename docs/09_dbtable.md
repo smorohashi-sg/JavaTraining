@@ -13,7 +13,7 @@
 | 請求明細データ | T_BILLING_DETAIL_DATA |      |
 | 請求データ状況 | T_BILLING_STATUS      |      |
 
-## 加入者情報◆T_KANYU
+## 加入者情報◆T_MEMBER
 
 論理テーブル名: 加入者情報
 
