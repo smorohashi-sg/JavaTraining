@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.s_giken.training.webapp.exception.AttributeErrorException;
 import com.s_giken.training.webapp.model.entity.Member;
@@ -86,11 +87,12 @@ public class MemberService implements IMemberService {
     }
 
     /**
-     * 加入者を先所する
+     * 加入者を削除する
      * 
      * @param memberId 加入者情報のID
      */
     @Override
+    @Transactional
     public void deleteById(Long memberId) {
         memberRepository.deleteById(memberId);
     }

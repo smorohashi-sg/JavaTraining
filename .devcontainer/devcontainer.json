@@ -24,6 +24,5 @@
                 "vmware.vscode-spring-boot"
             ]
         }
-    },
-    "postCreateCommand": "bash .devcontainer/setup-aiagent.sh"
+    }
 }
