@@ -28,6 +28,8 @@ public interface IMemberRepository {
 
     public List<Member> findByNameLike(String name);
 
+    public List<Member> findByMailAndNameLike(String mail, String name);
+
     /**
      * 加入者情報をデータベースへ登録する。
      * 

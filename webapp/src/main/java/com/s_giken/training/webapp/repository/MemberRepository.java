@@ -92,6 +92,15 @@ public class MemberRepository implements IMemberRepository {
         return result;
     }
 
+    @Override
+    public List<Member> findByMailAndNameLike(String mail, String name) {
+
+        String sql = "SELECT * FROM T_MEMBER " + "WHERE mail LIKE ? " + "AND name LIKE ?";
+        Object[] args = { "%" + mail + "%", "%" + name + "%" };
+        int[] argTypes = { Types.VARCHAR, Types.VARCHAR };
+        return jdbcTemplate.query(sql, args, argTypes, rowMapper);
+    }
+
     /**
      * 加入者情報をデータベースへ登録する。
      *
