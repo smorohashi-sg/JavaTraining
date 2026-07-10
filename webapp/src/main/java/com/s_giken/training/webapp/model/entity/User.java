@@ -2,6 +2,7 @@ package com.s_giken.training.webapp.model.entity;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,6 @@ public class User {
     @Size(min = 1, max = 255)
     private String password;
 
-    @NotBlank
+    @NotNull
     private Boolean isEnabled;
 }

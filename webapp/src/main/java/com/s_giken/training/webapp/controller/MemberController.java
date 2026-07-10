@@ -14,7 +14,10 @@ import com.s_giken.training.webapp.exception.NotFoundException;
 import com.s_giken.training.webapp.model.PaymentMethod;
 import com.s_giken.training.webapp.model.entity.Member;
 import com.s_giken.training.webapp.model.entity.MemberSearchCondition;
+import com.s_giken.training.webapp.model.form.DeleteUserForm;
 import com.s_giken.training.webapp.service.IMemberService;
+
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -165,15 +168,21 @@ public class MemberController {
      * @param redirectAttributes リダイレクト先の画面に渡すデータ
      * @return リダイレクト先のURL
      */
-    @GetMapping("/delete/{id}")
-    @Transactional
-    public String deleteMember(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        var member = memberService.findById(id);
-        if (!member.isPresent()) {
-            throw new NotFoundException(String.format("指定したmemberId(%d)の加入者情報が存在しません。", id));
+    @PostMapping("/delete")
+    public String deleteMember(@Validated DeleteUserForm deleteUser,
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            throw new NotFoundException(String.format("指定したmemberId(%d)がただしくありません。"));
         }
 
-        memberService.deleteById(id);
+        Long memberId = deleteUser.getMemberId();
+        Optional<Member> member = memberService.findById(memberId);
+        if (!member.isPresent()) {
+            throw new NotFoundException(String.format("指定したmemberId(%d)の加入者情報が存在しません。", memberId));
+        }
+
+        memberService.deleteById(memberId);
         redirectAttributes.addFlashAttribute("message", "削除しました。");
         return "redirect:/member/search";
     }
