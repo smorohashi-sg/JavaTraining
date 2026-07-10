@@ -20,14 +20,12 @@ public interface IMemberRepository {
     public Optional<Member> findById(Long id);
 
     /**
-     * メールアドレスの一部にマッチするの加入者情報リストを取得する。
+     * 検索
      * 
-     * @return Optional型の Memberオブジェクト
+     * @param mail
+     * @param name
+     * @return
      */
-    public List<Member> findByMailLike(String mail);
-
-    public List<Member> findByNameLike(String name);
-
     public List<Member> findByMailAndNameLike(String mail, String name);
 
     /**

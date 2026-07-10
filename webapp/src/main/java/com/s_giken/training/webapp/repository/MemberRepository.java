@@ -54,49 +54,11 @@ public class MemberRepository implements IMemberRepository {
         return Optional.ofNullable(member);
     }
 
-    /**
-     * メールアドレスの一部にマッチするの加入者情報リストを取得する。
-     *
-     * @param mail 検索したいメールアドレスの一部
-     * @return Optional型の Memberオブジェクト
-     */
-    @Override
-    public List<Member> findByMailLike(String mail) {
-        if (mail == null) {
-            throw new IllegalStateException("mail is null");
-        }
-
-        String sql = "SELECT * FROM T_MEMBER WHERE mail like ?";
-        Object[] args = { "%" + mail + "%" };
-        int[] argTypes = { Types.VARCHAR };
-        List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
-        return result;
-    }
-
-    /**
-     * 2 * 氏名の一部にマッチする加入者情報リストを取得する。
-     * 
-     * @param name 検索したい氏名の一部
-     * @return Memberオブジェクトのリスト
-     */
-    @Override
-    public List<Member> findByNameLike(String name) {
-        if (name == null) {
-            throw new IllegalStateException("name is null");
-        }
-
-        String sql = "SELECT * FROM T_MEMBER WHERE name LIKE ?";
-        Object[] args = { "%" + name + "%" };
-        int[] argTypes = { Types.VARCHAR };
-        List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
-        return result;
-    }
-
     @Override
     public List<Member> findByMailAndNameLike(String mail, String name) {
 
         String sql = "SELECT * FROM T_MEMBER " + "WHERE mail LIKE ? " + "AND name LIKE ?";
-        Object[] args = { "%" + mail + "%", "%" + name + "%" };
+        Object[] args = { "% meil %", "% name %" };
         int[] argTypes = { Types.VARCHAR, Types.VARCHAR };
         return jdbcTemplate.query(sql, args, argTypes, rowMapper);
     }

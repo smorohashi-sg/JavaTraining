@@ -64,14 +64,6 @@ public class MemberService implements IMemberService {
             return memberRepository.findByMailAndNameLike(mail, name);
         }
 
-        if (mail != null && !mail.isBlank()) {
-            return memberRepository.findByMailLike(mail);
-        }
-
-        if (name != null && !name.isBlank()) {
-            return memberRepository.findByNameLike(name);
-        }
-
         return memberRepository.findAll();
     }
 
