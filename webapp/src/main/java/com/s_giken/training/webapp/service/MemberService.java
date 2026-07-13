@@ -60,11 +60,15 @@ public class MemberService implements IMemberService {
         String mail = memberSearchCondition.getMail();
         String name = memberSearchCondition.getName();
 
-        if (mail != null && !mail.isBlank() && name != null && !name.isBlank()) {
-            return memberRepository.findByMailAndNameLike(mail, name);
+        if (mail == null) {
+            mail = "";
         }
 
-        return memberRepository.findAll();
+        if (name == null) {
+            name = "";
+        }
+
+        return memberRepository.findByMailAndNameLike(mail, name);
     }
 
     /**

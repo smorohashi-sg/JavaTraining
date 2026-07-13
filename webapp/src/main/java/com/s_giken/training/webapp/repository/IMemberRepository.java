@@ -20,7 +20,7 @@ public interface IMemberRepository {
     public Optional<Member> findById(Long id);
 
     /**
-     * 検索
+     * 加入者情報を検索
      * 
      * @param mail
      * @param name
