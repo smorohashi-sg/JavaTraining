@@ -173,7 +173,7 @@ public class MemberController {
             BindingResult result,
             RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            throw new NotFoundException(String.format("指定したmemberId(%d)がただしくありません。"));
+            throw new NotFoundException(String.format("memberIdが不正です。"));
         }
 
         Long memberId = deleteUser.getMemberId();

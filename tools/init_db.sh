@@ -1,7 +1,13 @@
 #!/bin/bash
 
-psql -h database -U trainingapp -W trainingapp <<'__EOS__'
-CREATE SEQUENCE IF NOT EXISTS t_member_seq AS BIGINT START WITH 1 INCREMENT BY 1 NO CYCLE; 
+IS_INIT_DATA=$1
+
+tmpfile=$(mktemp)
+
+trap "rm -rf ${tmpfile}" EXIT
+
+cat <<'__EOS__' > ${tmpfile}
+CREATE SEQUENCE IF NOT EXISTS t_member_seq AS BIGINT START WITH 1 INCREMENT BY 1 NO CYCLE;
 
 CREATE TABLE IF NOT EXISTS t_user (
     username        VARCHAR(255)  NOT NULL,
@@ -23,10 +29,73 @@ CREATE TABLE IF NOT EXISTS t_member (
     PRIMARY KEY (member_id)
 );
 
+CREATE SEQUENCE IF NOT EXISTS t_charge_seq AS BIGINT START WITH 1 INCREMENT BY 1 NO CYCLE;
+
+CREATE TABLE IF NOT EXISTS t_charge (
+    charge_id       BIGINT NOT NULL,
+    name            VARCHAR(127) NOT NULL,
+    amount          NUMERIC(9,0) NOT NULL,
+    start_date      DATE NOT NULL,
+    end_date        DATE,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (charge_id)
+);
+
+CREATE TABLE IF NOT EXISTS t_billing_status (
+    billing_ym      DATE NOT NULL,
+    is_commit       BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (billing_ym)
+);
+
+CREATE TABLE IF NOT EXISTS t_billing_data (
+    billing_ym      DATE NOT NULL,
+    member_id       BIGINT NOT NULL,
+    mail            VARCHAR(255) NOT NULL,
+    name            VARCHAR(31) NOT NULL,
+    address         VARCHAR(127) NOT NULL,
+    start_date      DATE NOT NULL,
+    end_date        DATE,
+    payment_method  INTEGER NOT NULL,
+    amount          NUMERIC(10,0) NOT NULL,
+    tax_ratio       NUMERIC(5,2) NOT NULL,
+    total           NUMERIC(10,0) NOT NULL,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (billing_ym, member_id),
+    FOREIGN KEY (billing_ym)
+        REFERENCES t_billing_status(billing_ym)
+);
+
+CREATE TABLE IF NOT EXISTS t_billing_detail_data (
+    billing_ym      DATE NOT NULL,
+    member_id       BIGINT NOT NULL,
+    charge_id       BIGINT NOT NULL,
+    name            VARCHAR(127) NOT NULL,
+    amount          NUMERIC(9,0) NOT NULL,
+    start_date      DATE NOT NULL,
+    end_date        DATE,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (billing_ym, member_id, charge_id),
+    FOREIGN KEY (billing_ym, member_id)
+        REFERENCES t_billing_data(billing_ym, member_id)
+);
+
+__EOS__
+
+if [ "${IS_INIT_DATA}" = "init_data" ]; then
+cat <<'__EOS__' >> ${tmpfile}
 BEGIN;
 
-DELETE FROM T_MEMBER;
-DELETE FROM T_USER;
+DELETE FROM t_user;
+DELETE FROM t_member;
+DELETE FROM t_charge;
+DELETE FROM t_billing_status;
+DELETE FROM t_billing_data;
+DELETE FROM T_billing_detail_data;
 
 -- user/password
 INSERT INTO T_USER VALUES ('user', '$argon2id$v=19$m=14,t=2,p=1$eVczdXhrMWlDZERWUnZWdA$HjSDtkidFBp49L0k8ZlvtTVcKkC//uOkIjDRiYbGIWg', true);
@@ -35,3 +104,6 @@ INSERT INTO T_MEMBER VALUES (nextval('t_member_seq'), 'yamada@example.com', '山
 
 COMMIT;
 __EOS__
+fi
+
+cat ${tmpfile} | psql -h database -U trainingapp -W trainingapp
