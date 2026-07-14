@@ -29,7 +29,7 @@ public class ChargeController {
             Model model) {
         var result = chargeservice.findByConditions(chargeSearchCodition);
         model.addAttribute("result", result);
-        return "member_search_result";
+        return "charge_search_result";
     }
 
 }
