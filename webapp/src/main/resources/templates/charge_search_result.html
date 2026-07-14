@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/app :: layout('料金情報検索結果', ~{::content}, 'member')}" xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="content">
+  <!--/*
+        料金情報検索結果表示画面
+    */-->
+  <a role="button" class="secondary" th:href="@{/charge/search}">戻る</a>
+  <table>
+    <thead>
+      <tr>
+        <th>料金番号</th>
+        <th>料金名</th>
+        <th>月額料金</th>
+        <th>適用開始日</th>
+        <th>適用終了日</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:if="${!#lists.isEmpty(result)}" th:each="row : ${result}">
+        <td>
+          <a th:href="@{/member/edit/{id}(id=${row.memberId})}" th:text="${row.memberId}"></a>
+        </td>
+        <td th:text="${row.charge}"></td>
+        <td th:text="${row.monthcharge}"></td>
+        <td th:text="${#temporals.format(row.startDate, 'yyyy/MM/dd')}"></td>
+        <td th:text="${row.endDate != null ? #temporals.format(row.endDate, 'yyyy/MM/dd') : ''}"></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(result)}">
+        <td colspan="7" class="no-result">該当する情報が見つかりませんでした。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</html>

@@ -85,3 +85,13 @@ nav a:hover {
 [role="button"] {
     white-space: nowrap;
 }
+
+.charge-search {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.charge-search input {
+    width: 250px;
+}
