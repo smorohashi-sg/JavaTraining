@@ -16,7 +16,7 @@ public class ChargeRowMapper implements RowMapper<Charge> {
         Charge charge = new Charge();
         charge.setChargeid(rs.getLong("charge_id"));
         charge.setName(rs.getString("name"));
-        charge.setAmount(rs.getBigDecimal("amont"));
+        charge.setAmount(rs.getBigDecimal("amount"));
         Date startDate = rs.getDate("start_date");
         charge.setStartDate((startDate != null) ? startDate.toLocalDate() : null);
         Date endDate = rs.getDate("end_date");

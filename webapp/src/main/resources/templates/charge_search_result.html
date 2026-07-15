@@ -20,10 +20,10 @@
     <tbody>
       <tr th:if="${!#lists.isEmpty(result)}" th:each="row : ${result}">
         <td>
-          <a th:href="@{/member/edit/{id}(id=${row.memberId})}" th:text="${row.memberId}"></a>
+          <a th:href="@{/charge/edit/{id}(id=${row.chargeid})}" th:text="${row.chargeid}"></a>
         </td>
-        <td th:text="${row.charge}"></td>
-        <td th:text="${row.monthcharge}"></td>
+        <td th:text="${row.name}"></td>
+        <td th:text="${row.amount}"></td>
         <td th:text="${#temporals.format(row.startDate, 'yyyy/MM/dd')}"></td>
         <td th:text="${row.endDate != null ? #temporals.format(row.endDate, 'yyyy/MM/dd') : ''}"></td>
       </tr>
