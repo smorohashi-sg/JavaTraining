@@ -28,7 +28,7 @@
         <td th:text="${row.endDate != null ? #temporals.format(row.endDate, 'yyyy/MM/dd') : ''}"></td>
       </tr>
       <tr th:if="${#lists.isEmpty(result)}">
-        <td colspan="7" class="no-result">該当する情報が見つかりませんでした。</td>
+        <td colspan="5" class="no-result">該当する情報が見つかりませんでした。</td>
       </tr>
     </tbody>
   </table>
