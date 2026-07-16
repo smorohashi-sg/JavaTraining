@@ -33,7 +33,7 @@ public class Charge {
     private LocalDate startDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull
+    @Nullable
     private LocalDate endDate;
 
 }
