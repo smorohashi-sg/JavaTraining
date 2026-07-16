@@ -28,7 +28,7 @@ public class MemberRepository implements IMemberRepository {
      */
     @Override
     public List<Member> findAll() {
-        String sql = "SELECT * FROM T_MEMBER";
+        String sql = "SELECT * FROM T_MEMBER ORDER BY member_id";
         List<Member> result = jdbcTemplate.query(sql, rowMapper);
         return result;
     }
@@ -57,7 +57,7 @@ public class MemberRepository implements IMemberRepository {
     @Override
     public List<Member> findByMailAndNameLike(String mail, String name) {
 
-        String sql = "SELECT * FROM T_MEMBER WHERE mail LIKE ? AND name LIKE ?";
+        String sql = "SELECT * FROM T_MEMBER WHERE mail LIKE ? AND name LIKE ? ORDER BY member_id";
         Object[] args = { "%" + mail + "%", "%" + name + "%" };
         int[] argTypes = { Types.VARCHAR, Types.VARCHAR };
         return jdbcTemplate.query(sql, args, argTypes, rowMapper);

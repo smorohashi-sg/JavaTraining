@@ -1,13 +1,22 @@
 package com.s_giken.training.webapp.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.s_giken.training.webapp.model.entity.Charge;
 
 public interface IChargeRepository {
 
-    List<Charge> findAll();
+    public List<Charge> findAll();
 
-    List<Charge> selectByNameWildcard(String charge);
+    public Optional<Charge> findById(Long chargeid);
+
+    public List<Charge> selectByNameWildcard(String charge);
+
+    public int add(Charge charge);
+
+    public int update(Charge charge);
+
+    public int deleteById(Long chargeid);
 
 }

@@ -28,11 +28,11 @@ public class Charge {
     @Digits(integer = 9, fraction = 0)
     private java.math.BigDecimal amount;
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
     private LocalDate startDate;
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
     private LocalDate endDate;
 
