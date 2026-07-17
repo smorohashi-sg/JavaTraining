@@ -67,6 +67,12 @@ public class ChargeController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             Model model) {
+
+        if (charge.getStartDate() != null && charge.getEndDate() != null
+                && charge.getEndDate().isBefore(charge.getStartDate())) {
+            bindingResult.rejectValue("endDate", "date.range", "終了日は開始日以降の日付を入力してください。");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("isAddMode", true);
             return "charge_edit";
@@ -82,6 +88,12 @@ public class ChargeController {
     public String saveCharge(@Validated Charge charge,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
+
+        if (charge.getStartDate() != null && charge.getEndDate() != null
+                && charge.getEndDate().isBefore(charge.getStartDate())) {
+            bindingResult.rejectValue("endDate", "date.range", "終了日は開始日以降の日付を入力してください。");
+        }
+
         if (bindingResult.hasErrors()) {
             return "charge_edit";
         }

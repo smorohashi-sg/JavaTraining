@@ -131,6 +131,11 @@ public class MemberController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             Model model) {
+        if (member.getStartDate() != null && member.getEndDate() != null
+                && member.getEndDate().isBefore(member.getStartDate())) {
+            bindingResult.rejectValue("endDate", "date.range", "終了日は開始日以降の日付を入力してください。");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("isAddMode", true);
             return "member_edit";
@@ -153,6 +158,11 @@ public class MemberController {
     public String saveMember(@Validated Member member,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
+
+        if (member.getStartDate() != null && member.getEndDate() != null
+                && member.getEndDate().isBefore(member.getStartDate())) {
+            bindingResult.rejectValue("endDate", "date.range", "終了日は開始日以降の日付を入力してください。");
+        }
         if (bindingResult.hasErrors()) {
             return "member_edit";
         }

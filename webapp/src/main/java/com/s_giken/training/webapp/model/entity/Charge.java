@@ -25,6 +25,7 @@ public class Charge {
     @Size(min = 1, max = 127)
     private String name;
 
+    @NotNull
     @Digits(integer = 9, fraction = 0)
     private java.math.BigDecimal amount;
 
